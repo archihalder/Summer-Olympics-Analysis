@@ -77,7 +77,7 @@ if menu == 'Overall Analysis':
         st.header('Countries')
         st.title(nation)
 
-nations_over_time = overall_analysis.participating_nations_over_time(df)
-fig = px.line(nations_over_time, x='Year', y='No. of Countries')
-st.title('Participating Nations over the years')
-st.plotly_chart(fig)
+    nations_over_time = overall_analysis.participating_nations_over_time(df)
+    fig = px.line(nations_over_time, x='Year', y='No. of Countries')
+    st.title('Participating Nations over the years')
+    st.plotly_chart(fig)
