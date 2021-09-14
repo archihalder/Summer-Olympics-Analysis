@@ -4,6 +4,8 @@ import preprocessor
 import medals
 import overall_analysis
 import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 df = pd.read_csv('Data/athlete_events.csv')
 reg_df = pd.read_csv('Data/noc_regions.csv')
@@ -77,7 +79,34 @@ if menu == 'Overall Analysis':
         st.header('Countries')
         st.title(nation)
 
-    nations_over_time = overall_analysis.participating_nations_over_time(df)
-    fig = px.line(nations_over_time, x='Year', y='No. of Countries')
+    nations_over_time = overall_analysis.data_over_time(df, 'Country')
+    fig = px.line(nations_over_time, x='Year', y='Country')
     st.title('Participating Nations over the years')
     st.plotly_chart(fig)
+
+    events_over_time = overall_analysis.data_over_time(df, 'Event')
+    fig = px.line(events_over_time, x='Year', y='Event')
+    st.title('Events over the years')
+    st.plotly_chart(fig)
+
+    athletes_over_time = overall_analysis.data_over_time(df, 'Name')
+    fig = px.line(athletes_over_time, x='Year', y='Name')
+    st.title('Number of athletes participated over the years')
+    st.plotly_chart(fig)
+
+    st.title('Number of Events played over time (All Sports)')
+    fig, ax = plt.subplots(figsize=(20, 20))
+    pt = df.drop_duplicates(['Year', 'Sport', 'Event'])
+    pt = pt.pivot_table(index='Sport', columns='Year', values='Event', aggfunc='count').fillna(0).astype('int')
+    ax = sns.heatmap(pt, annot=True)
+    st.pyplot(fig)
+
+    # Creating list of sports played
+    sp = df['Sport'].unique().tolist()
+    sp.sort()
+    sp.insert(0, 'Overall')
+
+    st.title('Most Successful Athletes in Olympic History')
+    selected_sport = st.selectbox('Select Sport', sp)
+    msa = overall_analysis.most_successful(df, selected_sport)
+    st.table(msa)
