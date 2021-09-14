@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import preprocessor
 import medals
-import overall_analysis
+import overall_analysis as oa
+import country_wise_analysis as cwa
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -79,17 +80,17 @@ if menu == 'Overall Analysis':
         st.header('Countries')
         st.title(nation)
 
-    nations_over_time = overall_analysis.data_over_time(df, 'Country')
+    nations_over_time = oa.data_over_time(df, 'Country')
     fig = px.line(nations_over_time, x='Year', y='Country')
     st.title('Participating Nations over the years')
     st.plotly_chart(fig)
 
-    events_over_time = overall_analysis.data_over_time(df, 'Event')
+    events_over_time = oa.data_over_time(df, 'Event')
     fig = px.line(events_over_time, x='Year', y='Event')
     st.title('Events over the years')
     st.plotly_chart(fig)
 
-    athletes_over_time = overall_analysis.data_over_time(df, 'Name')
+    athletes_over_time = oa.data_over_time(df, 'Name')
     fig = px.line(athletes_over_time, x='Year', y='Name')
     st.title('Number of athletes participated over the years')
     st.plotly_chart(fig)
@@ -108,5 +109,30 @@ if menu == 'Overall Analysis':
 
     st.title('Most Successful Athletes in Olympic History')
     selected_sport = st.selectbox('Select Sport', sp)
-    msa = overall_analysis.most_successful(df, selected_sport)
+    msa = oa.most_successful(df, selected_sport)
     st.table(msa)
+
+if menu == 'Country-wise Analysis':
+
+    # country list
+    country_list = df['Country'].dropna().unique().tolist()
+    country_list.sort()
+    selected_country = st.sidebar.selectbox('Select the Country', country_list)
+
+    # year-wise medal tally
+    country_df = cwa.year_wise_medal_tally(df, selected_country)
+    st.title('Year-wise Medal Tally of ' + selected_country)
+    fig = px.line(country_df, x='Year', y='Medal')
+    st.plotly_chart(fig)
+
+    # most successful athletes
+    st.title('Most successful athletes of ' + selected_country)
+    best_athlete = cwa.successful_athlete(df, selected_country)
+    st.table(best_athlete)
+
+    # event-wise heatmap
+    st.title('Event-wise Performance of ' + selected_country)
+    heat_map = cwa.country_event_heatmap(df, selected_country)
+    fig, ax = plt.subplots(figsize=(20, 20))
+    ax = sns.heatmap(heat_map, annot=True)
+    st.pyplot(fig)
