@@ -1,6 +1,3 @@
-import pandas as pd
-
-
 def year_wise_medal_tally(df, country):
     cm = df.dropna(subset=['Medal'])
     cm = cm.drop_duplicates(subset=['Team', 'NOC', 'Games', 'Year', 'City', 'Sport', 'Event', 'Medal'])
