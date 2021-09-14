@@ -16,6 +16,7 @@ reg_df = pd.read_csv('Data/noc_regions.csv')
 df = preprocessor.loader(df, reg_df)
 
 st.sidebar.title('Summer Olympics Analysis')
+st.sidebar.image('Data/logo.png')
 menu = st.sidebar.radio(
     'Select an option',
     (
