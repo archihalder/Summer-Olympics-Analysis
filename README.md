@@ -14,6 +14,7 @@ Note that the Winter and Summer Games were held in the same year up until 1992. 
 ---
 
 <h2> How to use the project </h2>
+<h3>If you want to run this project on your local machine, follow the below commands</h3>
 
 1. Installing the required softwares:-
    ```bash
@@ -33,3 +34,6 @@ Note that the Winter and Summer Games were held in the same year up until 1992. 
    ```
    For better experience, use wide view option on streamlit.
 5. To close the app from the terminal, press Ctrl+C.
+
+<h3> Otherwise </h3>
+Click <a href="https://summer-olympics-analysis.herokuapp.com/">here</a> to run the project on your browser
